@@ -7,38 +7,31 @@ interface ContractsConfig {
 
 export const chainsToAirdropERC20: ContractsConfig = {
   324: {
-    airdropERC20:
-      "0x7e645Ea4386deb2E9e510D805461aA12db83fb5E",
+    airdropERC20: "0x7e645Ea4386deb2E9e510D805461aA12db83fb5E",
     no_check: null,
   },
   1: {
-    airdropERC20:
-      "0x3aD9F29AB266E4828450B33df7a9B9D7355Cd821",
+    airdropERC20: "0x3aD9F29AB266E4828450B33df7a9B9D7355Cd821",
     no_check: "0x7D4a746Cb398e5aE19f6cBDC08473664ADBc6da5",
   },
   42161: {
-    airdropERC20:
-      "0xA2b5aEDF7EEF6469AB9cBD99DE24a6881702Eb19",
+    airdropERC20: "0xA2b5aEDF7EEF6469AB9cBD99DE24a6881702Eb19",
     no_check: "0x091bAB6497F2Cc429c82c5807Df4faA34235Cccc",
   },
   10: {
-    airdropERC20:
-      "0xAaf523DF9455cC7B6ca5637D01624BC00a5e9fAa",
+    airdropERC20: "0xAaf523DF9455cC7B6ca5637D01624BC00a5e9fAa",
     no_check: "0xa0c7ADA2c7c29729d12e2649BC6a0a293Ac46725",
   },
   8453: {
-    airdropERC20:
-      "0x31801c3e09708549c1b2c9E1CFbF001399a1B9fa",
+    airdropERC20: "0x31801c3e09708549c1b2c9E1CFbF001399a1B9fa",
     no_check: "0x39338138414Df90EC67dC2EE046ab78BcD4F56D9",
   },
   31337: {
-    airdropERC20:
-      "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    airdropERC20: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     no_check: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
   },
   11155111: {
-    airdropERC20:
-      "0xa27c5C77DA713f410F9b15d4B0c52CAe597a973a",
+    airdropERC20: "0xa27c5C77DA713f410F9b15d4B0c52CAe597a973a",
     no_check: "0xa27c5C77DA713f410F9b15d4B0c52CAe597a973a",
   },
 };
@@ -420,9 +413,7 @@ export const erc20Abi = [
       },
     ],
     name: "approve",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -440,9 +431,7 @@ export const erc20Abi = [
       },
     ],
     name: "authorizationState",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -570,27 +559,21 @@ export const erc20Abi = [
       },
     ],
     name: "configureMinter",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
     name: "currency",
-    outputs: [
-      { internalType: "string", name: "", type: "string" },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "decimals",
-    outputs: [
-      { internalType: "uint8", name: "", type: "uint8" },
-    ],
+    outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
     stateMutability: "view",
     type: "function",
   },
@@ -608,9 +591,7 @@ export const erc20Abi = [
       },
     ],
     name: "decreaseAllowance",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -628,9 +609,7 @@ export const erc20Abi = [
       },
     ],
     name: "increaseAllowance",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -735,9 +714,7 @@ export const erc20Abi = [
       },
     ],
     name: "isBlacklisted",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -750,9 +727,7 @@ export const erc20Abi = [
       },
     ],
     name: "isMinter",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -783,9 +758,7 @@ export const erc20Abi = [
       },
     ],
     name: "mint",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -811,9 +784,7 @@ export const erc20Abi = [
   {
     inputs: [],
     name: "name",
-    outputs: [
-      { internalType: "string", name: "", type: "string" },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
@@ -859,9 +830,7 @@ export const erc20Abi = [
   {
     inputs: [],
     name: "paused",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -1051,9 +1020,7 @@ export const erc20Abi = [
       },
     ],
     name: "removeMinter",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -1096,9 +1063,7 @@ export const erc20Abi = [
   {
     inputs: [],
     name: "symbol",
-    outputs: [
-      { internalType: "string", name: "", type: "string" },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
@@ -1129,9 +1094,7 @@ export const erc20Abi = [
       },
     ],
     name: "transfer",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -1154,9 +1117,7 @@ export const erc20Abi = [
       },
     ],
     name: "transferFrom",
-    outputs: [
-      { internalType: "bool", name: "", type: "bool" },
-    ],
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -1340,15 +1301,13 @@ export const erc20Abi = [
   {
     inputs: [],
     name: "version",
-    outputs: [
-      { internalType: "string", name: "", type: "string" },
-    ],
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "pure",
     type: "function",
   },
 ];
 
-export const tsenderAbi = [
+export const airdropAbi = [
   {
     type: "function",
     name: "airdropERC20",

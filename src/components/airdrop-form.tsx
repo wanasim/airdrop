@@ -22,20 +22,17 @@ import {
   useAccount,
   useChainId,
   useConfig,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from "wagmi";
 
-import {
-  erc20Abi as abi,
-  chainsToAirdropERC20,
-} from "@/constants";
-import { readContract } from "@wagmi/core";
+import { erc20Abi as abi, airdropAbi, chainsToAirdropERC20 } from "@/constants";
+import { readContract, waitForTransactionReceipt } from "@wagmi/core";
 import { formatEther } from "viem";
 
 const formSchema = z.object({
-  tokenAddress: z
-    .string()
-    .min(42, "Token address must be 42 characters long"),
-  recipients: z.string().min(1, "Recipients are required"),
+  tokenAddress: z.string().min(42, "Token address must be 42 characters long"),
+  recipients: z.string().min(42, "Recipients are required"),
   amount: z.string().min(1, "Amount is required"),
   chainId: z.number().default(1),
 });
@@ -92,6 +89,13 @@ export function AirdropForm() {
   const chainId = useChainId();
   const account = useAccount();
   const config = useConfig();
+  const { data: hash, writeContractAsync: approve, isPending } = useWriteContract();
+  const { isLoading: isReceiptLoading, isSuccess: isReceiptSuccess } = useWaitForTransactionReceipt(
+    {
+      confirmations: 1,
+      hash: hash as `0x${string}`,
+    },
+  );
   const mainForm = useForm({
     // @ts-ignore - zodResolver ts issue @ https://github.com/colinhacks/zod/issues/3987
     resolver: zodResolver(formSchema),
@@ -103,48 +107,60 @@ export function AirdropForm() {
     },
   });
 
-  async function onSubmit(
-    values: z.infer<typeof formSchema>
-  ) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!account.address) {
+      toast.error("Please connect your wallet first!");
+      return;
+    }
+    const airdropAddress = (
+      chainsToAirdropERC20[chainId] as {
+        airdropERC20: string;
+      }
+    ).airdropERC20 as `0x${string}`;
+
+    const approvedAmount = await getApprovedAmount({
+      tokenAddress: values.tokenAddress as `0x${string}`,
+      ownerAddress: account.address as `0x${string}`,
+      airdropAddress,
+      config,
+    });
+    const totalAmount = values.amount.split(",").reduce((total, num) => total + Number(num), 0);
+    console.log("totalAmount", totalAmount);
     try {
-      if (!account.address) {
-        toast.error("Please connect your wallet first!");
-        return;
-      }
+      if (Number(formatEther(approvedAmount)) < totalAmount) {
+        const approvalHash = await approve({
+          abi,
+          address: values.tokenAddress as `0x${string}`,
+          functionName: "approve",
+          args: [airdropAddress, totalAmount],
+        });
 
-      const approvedAmount = await getApprovedAmount({
-        tokenAddress: values.tokenAddress as `0x${string}`,
-        ownerAddress: account.address as `0x${string}`,
-        airdropAddress: chainsToAirdropERC20[chainId]
-          .airdropERC20 as `0x${string}`,
-        config,
+        await waitForTransactionReceipt(config, { hash: approvalHash as `0x${string}` });
+
+        toast.success("Successfully approved token allowances!", {
+          description: `You have approved ${totalAmount} tokens to the airdrop contract.`,
+        });
+      }
+      await approve({
+        abi: airdropAbi,
+        address: airdropAddress,
+        functionName: "airdropERC20",
+        args: [
+          values.tokenAddress,
+          values.recipients.split(",").map((recipient) => recipient.trim()),
+          values.amount.split(",").map(Number),
+          totalAmount,
+        ],
       });
 
-      if (approvedAmount < BigInt(values.amount)) {
-        toast.error(
-          `Insufficient allowance! You currently have ${formatEther(
-            approvedAmount
-          )}  allowance for this contract.`
-        );
-        return;
-      }
-
-      const result = await airdropTokens({
-        ...values,
-        chainId,
+      toast.success("Successfully airdropped tokens!", {
+        description: `You airdropped ${totalAmount} tokens to the following recipients:\n${values.recipients.split(",").join("\n")}`,
       });
-
-      if (result.success) {
-        toast.success("Airdrop submitted successfully!");
-        mainForm.reset();
-      } else {
-        toast.error(
-          result.error || "Something went wrong!"
-        );
-      }
     } catch (error) {
-      toast.error("Something went wrong!");
       console.error(error);
+      toast.error("Something went wrong!");
+    } finally {
+      mainForm.reset();
     }
   }
 
@@ -157,7 +173,7 @@ export function AirdropForm() {
           },
           (errors) => {
             console.error("Form validation failed", errors);
-          }
+          },
         )}
         className="space-y-8"
       >
@@ -166,9 +182,19 @@ export function AirdropForm() {
           name="tokenAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Token Address</FormLabel>
+              <FormLabel
+                className={
+                  mainForm.formState.errors.tokenAddress ? "text-red-500" : "text-gray-200"
+                }
+              >
+                Token Address
+              </FormLabel>
               <FormControl>
-                <Input placeholder="0x..." {...field} />
+                <Input
+                  placeholder="0x..."
+                  {...field}
+                  className={`bg-gray-100 text-gray-900 placeholder:text-gray-500 ${mainForm.formState.errors.tokenAddress ? "border-red-500 focus-visible:ring-red-500" : "border-gray-300 focus-visible:ring-gray-400"}`}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -179,11 +205,16 @@ export function AirdropForm() {
           name="recipients"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Recipients</FormLabel>
+              <FormLabel
+                className={mainForm.formState.errors.recipients ? "text-red-500" : "text-gray-200"}
+              >
+                Recipients
+              </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Enter recipient addresses (one per line)"
                   {...field}
+                  className={`bg-gray-100 text-gray-900 placeholder:text-gray-500 ${mainForm.formState.errors.recipients ? "border-red-500 focus-visible:ring-red-500" : "border-gray-300 focus-visible:ring-gray-400"}`}
                 />
               </FormControl>
               <FormMessage />
@@ -195,20 +226,33 @@ export function AirdropForm() {
           name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Amount per Recipient</FormLabel>
+              <FormLabel
+                className={mainForm.formState.errors.amount ? "text-red-500" : "text-gray-200"}
+              >
+                Amount per Recipient
+              </FormLabel>
               <FormControl>
-                <Input placeholder="0.0" {...field} />
+                <Input
+                  placeholder="Enter amounts separated by commas (e.g., 1.5, 2.0, 3.5)"
+                  {...field}
+                  className={`bg-gray-100 text-gray-900 placeholder:text-gray-500 ${mainForm.formState.errors.amount ? "border-red-500 focus-visible:ring-red-500" : "border-gray-300 focus-visible:ring-gray-400"}`}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button
-          className="bg-amber-500 text-white hover:bg-amber-600 hover:cursor-pointer"
+          className="bg-amber-500 text-white hover:cursor-pointer hover:bg-amber-600"
           variant="outline"
           type="submit"
+          disabled={isPending || isReceiptLoading}
         >
-          Submit
+          {isPending
+            ? "Transaction Pending..."
+            : isReceiptLoading
+              ? "Confirming Transaction"
+              : "Submit"}
         </Button>
       </form>
     </Form>

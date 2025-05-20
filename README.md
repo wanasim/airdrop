@@ -99,3 +99,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+TODO
+
+1. figure out why you can't import tokens to metamask
+2. add more networks
+3. add loading states

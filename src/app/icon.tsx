@@ -37,8 +37,9 @@ export default function Icon() {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-tent"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-tent"
         >
+          <title>Tent Icon</title>
           <path
             stroke="none"
             d="M0 0h24v24H0z"

@@ -17,7 +17,12 @@ export default function Header() {
             className="text-lg sm:text-xl font-semibold hover:opacity-80 transition-opacity flex items-center gap-2"
           >
             <IconTent className="w-5 h-5 sm:w-6 sm:h-6" />
-            Airdop
+            <span>
+              <span className="underline decoration-amber-500 underline-offset-4">
+                Air
+              </span>
+              <span className="text-amber-500">Drop</span>
+            </span>
           </Link>
           <Link
             href="https://github.com/yourusername/airdrop"

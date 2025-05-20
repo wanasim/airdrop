@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { AirdropForm } from "./components/airdrop-form";
+import { AirdropForm } from "@/components/airdrop-form";
 
 export default function Home() {
   return (

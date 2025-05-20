@@ -2,40 +2,13 @@
 
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
-import { http, WagmiProvider } from "wagmi";
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  sepolia,
-  anvil,
-} from "wagmi/chains";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
 import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
-
-const config = getDefaultConfig({
-  appName: "Airdop",
-  projectId: process.env
-    .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
-  chains: [sepolia, anvil],
-  transports: {
-    [sepolia.id]: http(
-      process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL as string
-    ),
-    [anvil.id]: http(
-      process.env.NEXT_PUBLIC_ANVIL_RPC_URL as string
-    ),
-  },
-  ssr: true,
-});
+import { config } from "./config";
 
 const queryClient = new QueryClient();
 

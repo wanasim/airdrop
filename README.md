@@ -57,6 +57,8 @@ npm run dev
 npm run anvil
 ```
 
+> **Note:** The `npm run anvil` script uses `airdrop-deploy.json` which contains a saved state for locally running Anvil. This state includes pre-deployed mock tokens that are distributed to Anvil's default accounts. The mock token contract is deployed at address `0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512`.
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
 ### Available Scripts
@@ -102,6 +104,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 TODO
 
-1. figure out why you can't import tokens to metamask
+1. Finish tests
 2. add more networks
-3. add loading states

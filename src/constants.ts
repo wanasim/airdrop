@@ -5,6 +5,14 @@ interface ContractsConfig {
   };
 }
 
+// Chain IDs and their corresponding networks:
+// 324: zkSync Era Mainnet
+// 1: Ethereum Mainnet
+// 42161: Arbitrum One
+// 10: Optimism
+// 8453: Base
+// 31337: Local Anvil Network
+// 11155111: Sepolia Testnet
 export const chainsToAirdropERC20: ContractsConfig = {
   324: {
     airdropERC20: "0x7e645Ea4386deb2E9e510D805461aA12db83fb5E",
